@@ -37,11 +37,16 @@ const multiplePugPlugins = pugFiles.map((name) => {
 });
 
 const targetTsFileToPug = () => {
-    let res = new Object();
+    let res = {};
     res.bundel = path.resolve(__dirname, 'src/global.ts');
 
     pugFiles.forEach((file) => {
-        res[file] = path.resolve(__dirname, 'src/' + file + '.ts');
+        let filePath = path.resolve(__dirname, 'src/' + file + '.ts');
+        if (fs.existsSync(filePath)) {
+            res[file] = filePath;
+        } else {
+            throw `[404]: Ts-File for "${file}" doesn't exist. `;
+        }
     });
     return res;
 };
